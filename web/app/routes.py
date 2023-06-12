@@ -71,16 +71,27 @@ def notification():
             ## TODO: Refactor This logic into an Azure Function
             ## Code below will be replaced by a message queue
             #################################################
+
             attendees = Attendee.query.all()
 
             for attendee in attendees:
-                subject = '{}: {}'.format(attendee.first_name, notification.subject)
-                send_email(attendee.email, subject, notification.message)
+                 subject = '{}: {}'.format(attendee.first_name, notification.subject)
+                 logging.info("Shall trigger a function that sends email to {}".format(attendee.email))
+                 # send_email(attendee.email, subject, notification.message)
+
 
             notification.completed_date = datetime.utcnow()
             notification.status = 'Notified {} attendees'.format(len(attendees))
+
             db.session.commit()
-            # TODO Call servicebus queue_client to enqueue notification ID
+            logging.info("New Notification saved in the DB")
+
+            # Call servicebus queue_client to enqueue notification ID
+            # Note: this line in official docs for azure-servicebus==0.50.2 helped me
+            # https://github.com/Azure/azure-sdk-for-python/blob/azure-servicebus_0.50.2/sdk/servicebus/azure-servicebus/examples/test_examples.py#LL432C46-L432C46
+            with queue_client.get_sender() as sender:
+                message = Message(str(notification.id))
+                sender.send(message)
 
             #################################################
             ## END of TODO

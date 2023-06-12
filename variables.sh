@@ -19,3 +19,6 @@ POSTGRES_SERVER_ADMIN_PASSWORD="P@ssw0rd1234"
 
 # Frontend
 WEB_APP_NAME="frontend-${SUFFIX}"
+
+# Function
+FUNCTION_APP_NAME="function-${SUFFIX}"
