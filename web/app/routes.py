@@ -66,6 +66,7 @@ def notification():
         try:
             db.session.add(notification)
             db.session.commit()
+            logging.info("New Notification submitted - inserted in the DB")
 
             ##################################################
             ## TODO: Refactor This logic into an Azure Function
@@ -79,12 +80,10 @@ def notification():
                  logging.info("Shall trigger a function that sends email to {}".format(attendee.email))
                  # send_email(attendee.email, subject, notification.message)
 
-
             notification.completed_date = datetime.utcnow()
             notification.status = 'Notified {} attendees'.format(len(attendees))
-
             db.session.commit()
-            logging.info("New Notification saved in the DB")
+            logging.info("Submitted Notification completed - updated in the DB")
 
             # Call servicebus queue_client to enqueue notification ID
             # Note: this line in official docs for azure-servicebus==0.50.2 helped me
