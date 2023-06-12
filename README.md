@@ -61,11 +61,22 @@ You will need to install the following locally:
 ## Monthly Cost Analysis
 Complete a month cost analysis of each Azure resource to give an estimate total cost using the table below:
 
-| Azure Resource | Service Tier | Monthly Cost |
-| ------------ | ------------ | ------------ |
-| *Azure Postgres Database* |     |              |
-| *Azure Service Bus*   |         |              |
-| ...                   |         |              |
+| Azure Resource | Service Tier | Monthly Cost (EUR) |
+| ------------ | ------------ | ------------: |
+| *Azure Postgres Database* | Basic (1 vCore, 5 GB Storage, Compute Generation 5)    |   25.32           |
+| *Azure Service Bus*   |  Basic ( 1M messages, Max msg size 256KB )       |   0.05     |
+| *App Service Plan (Frontend)*  | Free F1 (1 vCPU, 1 GB RAM, 1 GB Storage)        |        0.00     |
+| *App Service Plan (Function)*  | B1 (1 vCPU, 1.75 GB RAM, 10 GB Storage)        |        12.41     |
+| *Storage Account*  | Storage V2 (general purpose v2, locally redundant)  |        0.01  |
+| **Total**  |      |        **37.79**     |
 
 ## Architecture Explanation
 This is a placeholder section where you can provide an explanation and reasoning for your architecture selection for both the Azure Web App and Azure Function.
+
+### Azure Web App
+
+The Azure Web App isn't expected to attract much traffic. The free tier is sufficient. There won't be too much data either, shared storage account is ok for both the webapp and the function. Also it's not computationally heavy so free tier will do.
+
+### Azure Function
+
+The Azure Function isn't expected to have a lot of traffic. Ideally I would also go for the Free F1 tier but when scaling up from B1 to F1, the scaling operation fails: `Cannot update the site 'function-es81' because it uses x64 worker process which is not allowed in the target compute mode.`
