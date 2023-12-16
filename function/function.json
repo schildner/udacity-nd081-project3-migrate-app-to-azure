@@ -6,7 +6,7 @@
       "type": "serviceBusTrigger",
       "direction": "in",
       "queueName": "notificationqueue",
-      "connection": "Endpoint=sb://servicebus-es81.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=eUybUg0rg/lFfzp6jAxQCoEA5rDqsax/A+ASbK/KPmk="
+      "connection": "Endpoint=sb://servicebus-es81dec2023.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=QvARKfRRV2tF318pu4eS7bwKxN9L1NOAi+ASbOJpay4="
     }
   ]
 }
