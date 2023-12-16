@@ -7,6 +7,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import logging
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -41,7 +42,8 @@ def registration():
             session.pop('message', None)
             return render_template('registration.html', message=message)
         else:
-             return render_template('registration.html')
+            return render_template('registration.html')
+
 
 @app.route('/Attendees')
 def attendees():
@@ -53,6 +55,7 @@ def attendees():
 def notifications():
     notifications = Notification.query.order_by(Notification.id).all()
     return render_template('notifications.html', notifications=notifications)
+
 
 @app.route('/Notification', methods=['POST', 'GET'])
 def notification():
@@ -76,9 +79,9 @@ def notification():
             attendees = Attendee.query.all()
 
             for attendee in attendees:
-                 subject = '{}: {}'.format(attendee.first_name, notification.subject)
-                 logging.info("Shall trigger a function that sends email to {}".format(attendee.email))
-                 # send_email(attendee.email, subject, notification.message)
+                subject = f'{attendee.first_name}: {notification.subject}'
+                logging.info(f"Shall trigger a function that sends email to {attendee.email}")
+                # send_email(attendee.email, subject, notification.message)
 
             notification.completed_date = datetime.utcnow()
             notification.status = 'Notified {} attendees'.format(len(attendees))
@@ -97,12 +100,11 @@ def notification():
             #################################################
 
             return redirect('/Notifications')
-        except :
+        except:
             logging.error('log unable to save notification')
 
     else:
         return render_template('notification.html')
-
 
 
 def send_email(email, subject, body):
