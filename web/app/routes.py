@@ -31,10 +31,11 @@ def registration():
         try:
             db.session.add(attendee)
             db.session.commit()
-            session['message'] = 'Thank you, {} {}, for registering!'.format(attendee.first_name, attendee.last_name)
+            session['message'] = f'Thank you, {attendee.first_name} {attendee.last_name}, for registering!'
             return redirect('/Registration')
-        except:
+        except Exception as e:
             logging.error('Error occured while saving your information')
+            logging.error(e)
 
     else:
         if 'message' in session:
@@ -72,8 +73,8 @@ def notification():
             logging.info("New Notification submitted - inserted in the DB")
 
             ##################################################
-            ## TODO: Refactor This logic into an Azure Function
-            ## Code below will be replaced by a message queue
+            # Task: Refactor This logic into an Azure Function
+            # Code below will be replaced by a message queue
             #################################################
 
             attendees = Attendee.query.all()
@@ -96,12 +97,13 @@ def notification():
                 sender.send(message)
 
             #################################################
-            ## END of TODO
+            # END of Task
             #################################################
 
             return redirect('/Notifications')
-        except:
+        except Exception as e:
             logging.error('log unable to save notification')
+            logging.error(e)
 
     else:
         return render_template('notification.html')
