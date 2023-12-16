@@ -2,3 +2,4 @@
 .DS_Store
 starter-code
 .vscode
+**/.venv/*
