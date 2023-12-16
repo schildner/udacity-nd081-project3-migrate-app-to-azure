@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-GREEN='\033[1;32m'
-NC='\033[0m' # No Color
+export YELLOW='\033[1;33m'
+export RED='\033[0;31m'
+export GREEN='\033[1;32m'
+export NC='\033[0m' # No Color
 
 # shellcheck disable=SC1091
 source ./variables.sh
@@ -18,7 +18,7 @@ az postgres server create \
     -u "${POSTGRES_SERVER_ADMIN}" \
     -p "${POSTGRES_SERVER_ADMIN_PASSWORD}" \
     --public-network-access Enabled \
-    --sku-name B_Gen5_1 \
+    --sku-name GP_Gen5_2 \
     --version 11
 
 az postgres db create \
@@ -67,10 +67,8 @@ az functionapp create \
     --os-type linux \
     -s "${STORAGE_ACCOUNT_NAME}"
 
-cd function
+cd function  || exit
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-
-func azure functionapp publish function-es81 --python --build remote
-
-cd ..
+func azure functionapp publish "function-${SUFFIX}" --python --build remote
+cd .. || exit
